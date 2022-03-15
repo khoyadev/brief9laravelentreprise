@@ -16,17 +16,23 @@ use App\Http\Controllers\EntrepriseController;
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
-});
-Route::get('/pays', [PaysController::class, 'index']);
+    });
+    
+    Route::get('/pays', [PaysController::class, 'index']);
+    //Route::middleware(['auth'])->group(function () {
+    Route::post('/entreprises/store', [EntrepriseController::class, 'store'])->name('entreprises.store');
+    Route::get('/entreprises', [EntrepriseController::class, 'index'])->name('entreprises.index');
+    Route::get('/entreprises/create', [EntrepriseController::class, 'create'])->name('entreprises.create');
+    Route::get('/entreprises/{entreprise}', [EntrepriseController::class, 'show'])->name('entreprises.show');
+//});
+    Route::get('regions/{id}', [RegionController::class, 'list']);
+    
 
-Route::post('/entreprises/store', [EntrepriseController::class, 'store'])->name('entreprises.store');
-Route::get('/entreprises', [EntrepriseController::class, 'index'])->name('entreprises.index');
-Route::get('/entreprises/create', [EntrepriseController::class, 'create'])->name('entreprises.create');
-Route::get('/entreprises/{entreprise}', [EntrepriseController::class, 'show'])->name('entreprises.show');
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
 
-Route::get('regions/{id}', [RegionController::class, 'list']);
-// return redirect()->action(
-//     [UserController::class, 'profile'], ['id' => 1]
-// );
+require __DIR__.'/auth.php';
